@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Temperature and humidity regulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        text-align: center; 
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+
+      table {
+        margin: 40px;
+        border-collapse: collapse;
+        width: 400px;
+        float: left;
+      }
+      
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even){background-color: #f2f2f2}
+      
+      th {
+        background-color: #4CAF50;
+        color: white;
+      }
+
+      #chartsContainer{
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+        display: inline-block;
+        text-align:center;
+      }
+
+      #tempDiv, #humDiv {
+        display:inline-block;
+        width:600px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Industruino Webserver</h1>
+      <h2>Temperature and humidity regulator</h2>
+    </div>
+    <hr />
+
+    <div style="display:inline-block; align-items: center;">
+      <table>
+        <tr>
+          <th>Devices</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Heater</td>
+          <td>OFF</td>
+        </tr>
+        <tr>
+          <td>Cooler</td>
+          <td>OFF</td>
+        </tr>
+        <tr>
+          <td>Humidity adder</td>
+          <td>OFF</td>
+        </tr>
+        <tr>
+          <td>Humidity remover</td>
+          <td>OFF</td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th>Parameters</th>
+          <th>Values</th>
+        </tr>
+        <tr>
+          <td>Temperature</td>
+          <td><input type="number" id="quantity" name="quantity" min="20" max="50"></td>
+        </tr>
+        <tr>
+          <td>Temperature hysteresis</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>Humidity</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>Humidity hysteresis</td>
+          <td>1.0</td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="chartsContainer">
+      <div id="tempDiv">
+        <canvas id="tempChart"></canvas>
+      </div>
+      <div id="humDiv">
+        <canvas id="humChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha256-8zyeSXm+yTvzUN1VgAOinFgaVFEFTyYzWShOy9w7WoQ=" crossorigin="anonymous"></script>
+    <script>
+      var ctx = document.getElementById('tempChart').getContext('2d');
+      var ctx2 = document.getElementById('humChart').getContext('2d');
+
+      var temperatureData = [20, 30, 55, 20];
+      var temperatureLabels = ['petak', 54, 'nedilja', 'ponediljak'];
+
+      var humidityData = [40, 45, 55, 60];
+      var humidityLabels = ['petak', 'subota', 'nedilja', 'ponediljak'];
+      
+      var temperatureLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: temperatureLabels,
+          datasets: [{
+            label: 'Sensors temperature',
+            backgroundColor: 'rgb(255, 0, 0)',
+            borderColor: 'rgb(255, 51, 51)',
+            data: temperatureData,
+            fill: false,
+				  }]
+			  },
+
+        options: {
+          responsive: true,
+          title: {
+            display: true,
+            text: 'Temperature chart'
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: true
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              }
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Temperature (°C)'
+              }
+            }]
+          }
+			  }
+      });
+
+      var humidityLineChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: humidityLabels,
+          datasets: [{
+            label: 'Sensors humidity',
+            backgroundColor: 'rgb(0, 0, 255)',
+            borderColor: 'rgb(51, 51, 255)',
+            data: humidityData,
+            fill: false,
+				  }]
+			  },
+
+        options: {
+          responsive: true,
+          title: {
+            display: true,
+            text: 'Humidity chart'
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: true
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              }
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Humidity (%)'
+              }
+            }]
+          }
+			  }
+      });
+    </script>
+  </body>
+</html>
